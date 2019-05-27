@@ -31,7 +31,11 @@ from ansible.module_utils.net_tools.nios.api import normalize_extattrs, flatten_
 
 CONFIG_FILES = [
     '/etc/ansible/infoblox.yaml',
-    '/etc/ansible/infoblox.yml'
+    '/etc/ansible/infoblox.yml',
+    os.path.dirname(os.path.abspath(__file__))+'/infoblox.yaml',
+    os.path.dirname(os.path.abspath(__file__))+'/infoblox.yml',
+    './infoblox.yaml',
+    './infoblox.yml'
 ]
 
 
@@ -49,12 +53,14 @@ def parse_args():
 
 def main():
     args = parse_args()
+    err = "\n"
 
     for config_file in CONFIG_FILES:
         if os.path.exists(config_file):
             break
+        err = err + config_file + '\n'
     else:
-        sys.stdout.write('unable to locate config file at /etc/ansible/infoblox.yaml\n')
+        sys.stdout.write('unable to locate config file at ' + err + '\n')
         sys.exit(-1)
 
     try:
